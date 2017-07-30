@@ -1,4 +1,14 @@
-# Dashboard.Client
+# Angular4-Ngrx-Upload-Module
+
+
+## Summary
+Angular4 project that cover upload and manage photos with ngrx immutable tried to use the most 'best practice'.
+I didn't saw any open source project that focous over this subject so I decided to make it, I hope you guys will learn from my mistakes or success module.
+If you see any bug, suggestion or want to improve it just notify me or write over the issue inside the repo.
+
+I will upload this module online soon.
+
+Have fun!
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.2.
 

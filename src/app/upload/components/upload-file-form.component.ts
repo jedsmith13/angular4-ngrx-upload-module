@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 @Component({
     selector: 'upload-file-form',
     template: `
-        <input type="file" multiple file-upload (onFileChanges)="onFileChanges($event)" />
+        <input type="file" multiple accept="image/x-png,image/jpeg" file-upload (onFileChanges)="onFileChanges($event)" />
     `,
     styleUrls: ['./upload-file.form.component.css']
 })

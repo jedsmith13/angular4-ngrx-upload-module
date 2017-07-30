@@ -15,9 +15,7 @@ const CLASS = 'PreviewComponent';
             <div class="image-content hide">
                 <img md-card-image process-image-buffer [imageBuffer]="image.buffer" (onImageLoaded)="onImageLoaded($event, 'loader-' + image.id)">
                 <md-card-content>
-                    <p>
-                        User will insert his description for each image here.
-                    </p>
+                    <md-icon>border_color</md-icon>
                 </md-card-content>
             </div>
         </md-card>

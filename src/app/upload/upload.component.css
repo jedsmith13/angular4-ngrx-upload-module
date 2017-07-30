@@ -1,0 +1,10 @@
+md-card {
+    background-color: #fff;
+    color: #000;
+    width: 90%;
+    margin: auto;
+}
+
+md-card-header {
+    justify-content: center;
+}

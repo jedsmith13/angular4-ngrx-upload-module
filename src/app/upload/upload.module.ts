@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     FormsModule,
     ReactiveFormsModule
@@ -20,7 +21,8 @@ import {
     MdCardModule,
     MdButtonModule,
     MdIconModule,
-    MdProgressSpinnerModule
+    MdProgressSpinnerModule,
+    MdInputModule
 } from '@angular/material';
 
 // TODO Implement effect thing..
@@ -36,10 +38,12 @@ import { DragAndDropService } from './services/drag-and-drop.service';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule,
         MdCardModule,
         MdButtonModule,
         MdIconModule,
-        MdProgressSpinnerModule
+        MdProgressSpinnerModule,
+        MdInputModule
     ],
     declarations: [
         UploadComponent,

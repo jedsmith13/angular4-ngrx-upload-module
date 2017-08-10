@@ -5,6 +5,10 @@ md-card {
     margin: auto;
 }
 
+md-card:nth-child(odd) {
+    margin-bottom: 10px;
+}
+
 md-card-header {
     justify-content: center;
 }

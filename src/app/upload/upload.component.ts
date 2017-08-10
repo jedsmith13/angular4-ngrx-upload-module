@@ -20,8 +20,10 @@ import { Observable } from 'rxjs/Observable';
             <button md-button>Upload</button>
             <button md-button (click)="onClearFiles()">Clear</button>
         </md-card-actions>
+    </md-card>
 
-        <preview-container [images]="(filesChangesState$ | async).files"></preview-container>
+    <md-card *ngIf="files.length > 0">
+        <preview-container [images]="files"></preview-container>
     </md-card>
     `,
     styleUrls: ['./upload.component.css']
@@ -41,12 +43,21 @@ export class UploadComponent implements OnInit {
     filesChangesState$: Observable<fromFile.State>;
 
 
+    /**
+     *
+     */
+    files: Array<any> = [];
+
     constructor(private _store: Store<fromRootUpload.State>, private _fileHandler: FileHandlerService) { }
 
 
     ngOnInit() {
         this.dragAndDropState$ = this._store.select('dragAndDrop');
         this.filesChangesState$ = this._store.select('file');
+
+        this.filesChangesState$.subscribe(fileChangeState => {
+            this.files = fileChangeState.files;
+        })
     }
 
 

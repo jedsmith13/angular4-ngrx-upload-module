@@ -2,12 +2,10 @@
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 300px;
     width: 90%;
     margin: 0 auto;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
     background-color: #fff;
     margin: 0 auto;
     padding: 0;
@@ -18,7 +16,12 @@
     justify-content: flex-start;
     align-content: center;
     flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     width: auto;
+    height: 275px;
 }
 
 .preview-image-cancel {

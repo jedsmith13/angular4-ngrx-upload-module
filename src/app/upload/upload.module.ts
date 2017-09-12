@@ -31,6 +31,7 @@ import {
 
 import { FileHandlerService } from './services/file-handler.service';
 import { DragAndDropService } from './services/drag-and-drop.service';
+import { DynamicScrollDirective } from './directives/dynamic-scroll.directive';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { DragAndDropService } from './services/drag-and-drop.service';
         DragAndDropDirective,
         ProcessImageBufferDirective,
         PreviewComponent,
+        DynamicScrollDirective,
     ],
     exports: [
         UploadComponent

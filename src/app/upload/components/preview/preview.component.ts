@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Renderer2, ElementRef, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { FileHandlerService } from '../../services/file-handler.service';
 
 const CLASS = 'PreviewComponent';
@@ -7,7 +7,7 @@ const CLASS = 'PreviewComponent';
     selector: 'preview-container',
     template: `
     <div class="preview-container" *ngIf="images.length">
-     <div class="image-preview-content" #imagesPreviewContent>
+     <div class="image-preview-content" dynamic-scroll [count]="images.length" [size]="250">
         <md-card class="preview-card" *ngFor="let image of images">
             <md-progress-spinner class="image-loader" [color]="'primary'" [mode]="'indeterminate'" #myLoader></md-progress-spinner>
             <div class="preview-image-cancel" (click)="onRemoveFile(image.id)">
@@ -29,28 +29,25 @@ const CLASS = 'PreviewComponent';
     styleUrls: ['preview.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
-    @ViewChild('imagesPreviewContent') private _previewContent: ElementRef;
-
+export class PreviewComponent implements OnInit, OnChanges {
+    /**
+     * Getting files on the store.
+     * 
+     * @type {File[]}
+     * @memberof PreviewComponent
+     */
     @Input() images: File[];
 
-    constructor(private _renderer: Renderer2, private _el: ElementRef, private _fileHandler: FileHandlerService) { }
+
+    constructor(private _renderer: Renderer2, private _fileHandler: FileHandlerService) { }
 
     ngOnInit() {
         console.log(`[${CLASS}] images => `, this.images);
-        console.log('Heya =>', this._previewContent);
     }
 
 
     ngOnChanges(changes: SimpleChanges) {
         console.log(`[${CLASS}] Simple changes => `, changes);
-    }
-
-
-    ngAfterViewInit() {
-        for (let i = 0; i < this.images.length; i++) {
-            // this._expandPreviewContent(this._previewContent.nativeElement, 200);
-        }
     }
 
 
@@ -71,17 +68,7 @@ export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
      */
     onRemoveFile(id) {
         console.log(`[${CLASS}] Removing file by id => `, id);
-
         this._fileHandler.removeById(id);
-        // this._renderer.setStyle(this.imagePreviewContent, 'width', this.imagePreviewContent.width - 200 + 'px');
     }
 
-
-    /**
-     * @param previewContentDOM 
-     * @param width 
-     */
-    _expandPreviewContent(previewContentDOM, width) {
-        this._renderer.setStyle(previewContentDOM, 'width', previewContentDOM.width + 200 + 'px');
-    }
 }

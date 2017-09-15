@@ -93,8 +93,6 @@ export class UploadComponent implements OnInit {
             filesFromData.append('showbizphoto[]', file.buffer, file.buffer);
        }
 
-       debugger;
-
        this._fileHandler.upload(filesFromData).subscribe(
         //map the success function and alert the response
         (success) => { alert(success._body) },

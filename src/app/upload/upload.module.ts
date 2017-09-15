@@ -5,6 +5,7 @@ import {
     FormsModule,
     ReactiveFormsModule
 } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { UploadComponent } from './upload.component';
 import {
     UploadBodyComponent,
@@ -39,6 +40,7 @@ import { DynamicScrollDirective } from './directives/dynamic-scroll.directive';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        HttpModule,
         BrowserAnimationsModule,
         MdCardModule,
         MdButtonModule,

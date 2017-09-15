@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, OnChanges, SimpleChanges, Renderer2 } from '@angular/core';
 
 const CLASS = 'DynamicScrollDirective',
-  buffer = 40;
+  buffer = 20;
 
 @Directive({
   selector: '[dynamic-scroll]'
@@ -35,14 +35,14 @@ export class DynamicScrollDirective {
   constructor(private _el: ElementRef, private _renderer: Renderer2) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.checkCurrentSizeContainer();
+    // this.checkCurrentSizeContainer();
 
     if (changes.count) {
-      if (changes.count.currentValue * this.size < this.width)
-      {
-        console.log(`[${CLASS}] The scroll bar container is big enough there is not need to resize or interffer with javascript.`);
-        return;
-      }
+      // if (changes.count.currentValue * this.size < this.width)
+      // {
+      //   console.log(`[${CLASS}] The scroll bar container is big enough there is not need to resize or interffer with javascript.`);
+      //   return;
+      // }
 
       console.log(`[${CLASS}] Starting resizing processs for help scroll bar.`);
       this.resize(changes.count.currentValue, this.size);

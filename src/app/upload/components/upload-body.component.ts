@@ -111,7 +111,7 @@ export class UploadBodyComponent implements OnInit {
         if (!this.firstUpload) this.firstUpload = !this.firstUpload;
 
         this._dragNdrop.notifyDropFile();
-        
+
         !this.firstUpload ?
             this.fileCountLimitValidation(this.currentStoreFileCount)(files) :
             this.fileCountLimitValidation(files.length)(files);
@@ -126,11 +126,7 @@ export class UploadBodyComponent implements OnInit {
     onChangeFilesFromInput(fileList: FileList) {
         let files = this.createFilePhotoModelFromFileList(fileList);
 
-        if (!this.firstUpload) this.firstUpload = !this.firstUpload;
-
-        !this.firstUpload ?
-            this.fileCountLimitValidation(this.currentStoreFileCount)(files) :
-            this.fileCountLimitValidation(files.length)(files);
+        this.fileCountLimitValidation(this.currentStoreFileCount)(files)
     }
 
 
@@ -147,7 +143,7 @@ export class UploadBodyComponent implements OnInit {
         console.log(`[${CLASS}] Current there %s files in the store.. `, count);
 
         return (files) => {
-            if (count >= 10 || count === 0) {
+            if (count + files.length > 10) {
                 console.error(`[${CLASS}] You reach the maximum images you can upload. `);
                 alert('You can upload maximum 10 photos at once.');
                 return;

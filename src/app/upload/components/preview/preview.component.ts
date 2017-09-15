@@ -6,6 +6,7 @@ const CLASS = 'PreviewComponent';
 @Component({
     selector: 'preview-container',
     template: `
+    <h3>- Preview Your Photos -</h3>
     <div class="preview-container" *ngIf="images.length">
      <div class="image-preview-content" dynamic-scroll [count]="images.length" [size]="250">
         <md-card class="preview-card" *ngFor="let image of images">

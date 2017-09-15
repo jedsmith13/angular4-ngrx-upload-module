@@ -39,6 +39,13 @@ export class UploadBodyComponent implements OnInit {
 
 
     /**
+     * The number of files that current stored in the store for limit
+     * The uploading photos to 10 per one request in the preview component.
+     */
+    @Input() currentStoreFileCount: File;
+
+
+    /**
      *
      */
     constructor(private _dragNdrop: DragAndDropService, private _fileHandler: FileHandlerService, private _utils: UtilsService) { }
@@ -93,7 +100,7 @@ export class UploadBodyComponent implements OnInit {
         if (files.length === 0) return;
 
         this._dragNdrop.notifyDropFile();
-        this._fileHandler.addFile(files);
+        this.fileCountLimitValidation(this.currentStoreFileCount)(files);
     }
 
 
@@ -107,7 +114,30 @@ export class UploadBodyComponent implements OnInit {
 
         if (files.length === 0) return;
 
-        this._fileHandler.addFile(files);
+        this.fileCountLimitValidation(this.currentStoreFileCount)(files);
+    }
+
+
+    /**
+     * Pass this validation step only if the number of files that current in the store are 
+     * smaller then 10.
+     * 
+     * @private
+     * @param {any} count 
+     * @returns 
+     * @memberof UploadBodyComponent
+     */
+    private fileCountLimitValidation(count) {
+        console.log(`[${CLASS}] Current there %s files in the store.. `, count);
+
+        return (files) => {
+            if (count > 9) {
+                console.error(`[${CLASS}] You reach the maximum images you can upload. `);
+                return;
+            }
+
+            this._fileHandler.addFile(files);
+        }
     }
 
 

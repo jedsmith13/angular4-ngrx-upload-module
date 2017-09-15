@@ -9,22 +9,24 @@ import { Observable } from 'rxjs/Observable';
 @Component({
     selector: 'upload-container',
     template: `
+    <div class="upload-container-wrapper">
     <md-card>
         <md-card-header>
-            <upload-header [title]="'Upload File'" [subtitle]="'Upload your best photos!'"></upload-header>
+            <upload-header [title]="'Upload Your Best Pics ;)'" [subtitle]="'You can upload 10 photos max.'"></upload-header>
         </md-card-header>
         <md-card-content>
-            <upload-body [isFileOverZone]="(dragAndDropState$ | async)?.isFileOverZone" [text]="'Drag files here'"></upload-body>
+            <upload-body [currentStoreFileCount]="currentStoreFileCount"  [isFileOverZone]="(dragAndDropState$ | async)?.isFileOverZone" [text]="'Drag files here'">
+            </upload-body>
         </md-card-content>
-        <md-card-actions>
-            <button md-button>Upload</button>
-            <button md-button (click)="onClearFiles()">Clear</button>
+        <md-card-actions *ngIf="files.length > 0">
+            <button md-button (click)="onClearFiles()">Remove All Photos From Preview</button>
         </md-card-actions>
     </md-card>
 
     <md-card *ngIf="files.length > 0">
         <preview-container [images]="files"></preview-container>
     </md-card>
+    </div>
     `,
     styleUrls: ['./upload.component.css']
 })
@@ -44,9 +46,17 @@ export class UploadComponent implements OnInit {
 
 
     /**
-     *
+     * 
      */
     files: Array<any> = [];
+
+
+    /**
+     * @type {number}
+     * @memberof UploadComponent
+     */
+    currentStoreFileCount: number;
+
 
     constructor(private _store: Store<fromRootUpload.State>, private _fileHandler: FileHandlerService) { }
 
@@ -57,6 +67,7 @@ export class UploadComponent implements OnInit {
 
         this.filesChangesState$.subscribe(fileChangeState => {
             this.files = fileChangeState.files;
+            this.currentStoreFileCount = fileChangeState.files.length;
         })
     }
 

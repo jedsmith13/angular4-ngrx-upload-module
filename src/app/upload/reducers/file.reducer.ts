@@ -1,15 +1,18 @@
 import { ActionReducer, Action } from '@ngrx/store';
 import { FilePhotoModel } from '../models/file-photo.model';
+import { PhotoModel } from '../models/photo.model';
 import { FILE_ADD } from '../actions/file-add.action';
 import { FILE_CLEAR } from '../actions/file-clear.action';
 import { FILE_REMOVE } from '../actions/file-remove.action';
 
 export interface State {
     files: FilePhotoModel[];
+    photos: PhotoModel[];
 }
 
 export const initialState: State = {
-    files: []
+    files: [],
+    photos: []
 }
 
 const CLASS = 'FILE-MANAGMENT-REDUCER';

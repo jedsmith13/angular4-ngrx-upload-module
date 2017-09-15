@@ -46,12 +46,23 @@ export class UploadBodyComponent implements OnInit {
 
 
     /**
+     * This should be a flag if user tried to set photos already. (currently bad practice.)
+     * 
+     * @type {boolean}
+     * @memberof UploadBodyComponent
+     */
+    firstUpload: boolean;
+
+
+    /**
      *
      */
     constructor(private _dragNdrop: DragAndDropService, private _fileHandler: FileHandlerService, private _utils: UtilsService) { }
 
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.firstUpload = false;
+    }
 
 
     /**
@@ -97,10 +108,13 @@ export class UploadBodyComponent implements OnInit {
     onDropFile(fileList: FileList) {
         let files = this.createFilePhotoModelFromFileList(fileList);
 
-        if (files.length === 0) return;
+        if (!this.firstUpload) this.firstUpload = !this.firstUpload;
 
         this._dragNdrop.notifyDropFile();
-        this.fileCountLimitValidation(this.currentStoreFileCount)(files);
+        
+        !this.firstUpload ?
+            this.fileCountLimitValidation(this.currentStoreFileCount)(files) :
+            this.fileCountLimitValidation(files.length)(files);
     }
 
 
@@ -112,9 +126,11 @@ export class UploadBodyComponent implements OnInit {
     onChangeFilesFromInput(fileList: FileList) {
         let files = this.createFilePhotoModelFromFileList(fileList);
 
-        if (files.length === 0) return;
+        if (!this.firstUpload) this.firstUpload = !this.firstUpload;
 
-        this.fileCountLimitValidation(this.currentStoreFileCount)(files);
+        !this.firstUpload ?
+            this.fileCountLimitValidation(this.currentStoreFileCount)(files) :
+            this.fileCountLimitValidation(files.length)(files);
     }
 
 
@@ -131,8 +147,9 @@ export class UploadBodyComponent implements OnInit {
         console.log(`[${CLASS}] Current there %s files in the store.. `, count);
 
         return (files) => {
-            if (count > 9) {
+            if (count >= 10 || count === 0) {
                 console.error(`[${CLASS}] You reach the maximum images you can upload. `);
+                alert('You can upload maximum 10 photos at once.');
                 return;
             }
 

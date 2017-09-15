@@ -7,7 +7,7 @@ const CLASS = 'PreviewComponent';
     selector: 'preview-container',
     template: `
     <h3>- Preview Your Photos -</h3>
-    <div class="preview-container" *ngIf="images.length">
+    <div class="preview-container">
      <div class="image-preview-content" dynamic-scroll [count]="images.length" [size]="250">
         <md-card class="preview-card" *ngFor="let image of images">
             <md-progress-spinner class="image-loader" [color]="'primary'" [mode]="'indeterminate'" #myLoader></md-progress-spinner>
@@ -26,7 +26,9 @@ const CLASS = 'PreviewComponent';
             </div>
         </md-card>
       </div>
-    </div>`,
+    </div>
+    <button class="upload-btn" md-raised-button>Upload</button>
+    `,
     styleUrls: ['preview.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

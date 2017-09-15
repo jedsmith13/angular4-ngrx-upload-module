@@ -46,23 +46,12 @@ export class UploadBodyComponent implements OnInit {
 
 
     /**
-     * This should be a flag if user tried to set photos already. (currently bad practice.)
-     * 
-     * @type {boolean}
-     * @memberof UploadBodyComponent
-     */
-    firstUpload: boolean;
-
-
-    /**
      *
      */
     constructor(private _dragNdrop: DragAndDropService, private _fileHandler: FileHandlerService, private _utils: UtilsService) { }
 
 
-    ngOnInit() {
-        this.firstUpload = false;
-    }
+    ngOnInit() { }
 
 
     /**
@@ -108,13 +97,8 @@ export class UploadBodyComponent implements OnInit {
     onDropFile(fileList: FileList) {
         let files = this.createFilePhotoModelFromFileList(fileList);
 
-        if (!this.firstUpload) this.firstUpload = !this.firstUpload;
-
         this._dragNdrop.notifyDropFile();
-
-        !this.firstUpload ?
-            this.fileCountLimitValidation(this.currentStoreFileCount)(files) :
-            this.fileCountLimitValidation(files.length)(files);
+        this.fileCountLimitValidation(this.currentStoreFileCount)(files)
     }
 
 

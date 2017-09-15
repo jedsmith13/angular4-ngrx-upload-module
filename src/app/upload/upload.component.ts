@@ -24,7 +24,7 @@ import { Observable } from 'rxjs/Observable';
     </md-card>
 
     <md-card *ngIf="files.length > 0">
-        <preview-container [images]="files"></preview-container>
+        <preview-container [files]="files" (onUploadFilesEmitter)="onUploadFiles($event)"></preview-container>
     </md-card>
     </div>
     `,
@@ -77,5 +77,27 @@ export class UploadComponent implements OnInit {
      */
     onClearFiles() {
         this._fileHandler.clearFiles();
+    }
+
+
+    /**
+     * @param {any} files 
+     * @memberof UploadComponent
+     */
+    onUploadFiles(files) {
+        let filesFromData: FormData = new FormData()
+
+        for (let file of files) {
+            file.buffer.id = file.id;
+            file.buffer.caption = file.caption;
+            filesFromData.append('showbizphoto[]', file.buffer, file.buffer);
+       }
+
+       debugger;
+
+       this._fileHandler.upload(filesFromData).subscribe(
+        //map the success function and alert the response
+        (success) => { alert(success._body) },
+        (error) => alert(error))
     }
 }

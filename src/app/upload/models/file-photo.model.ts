@@ -1,3 +1,3 @@
 export class FilePhotoModel {
-    constructor(public id: string , public buffer: File) {}
+    constructor(public id: string , public buffer: File, public caption: string = '') {}
 }

@@ -14,7 +14,7 @@ export class ProcessImageBufferDirective implements OnChanges {
 
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.imageBuffer) {
+        if (this._el.nativeElement.src === '' && changes.imageBuffer) {
             console.log(`[${CLASS}] Getting new image buffer to process.`);
             this._processImageBuffer(changes.imageBuffer.currentValue);
         }

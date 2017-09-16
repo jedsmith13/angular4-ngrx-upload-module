@@ -6,6 +6,8 @@ import * as fromFile from '../upload/reducers/file.reducer';
 import * as fromDragAndDrop from '../upload/reducers/drag-and-drop.reducer';
 import { Observable } from 'rxjs/Observable';
 
+const CLASS = 'UploadComponent';
+
 @Component({
     selector: 'upload-container',
     template: `
@@ -85,17 +87,19 @@ export class UploadComponent implements OnInit {
      * @memberof UploadComponent
      */
     onUploadFiles(files) {
-        let filesFromData: FormData = new FormData()
+        let filesFromData: FormData = new FormData();
+        filesFromData.append('cid', 'xjz34aw1');
 
         for (let file of files) {
-            file.buffer.id = file.id;
-            file.buffer.caption = file.caption;
-            filesFromData.append('showbizphoto[]', file.buffer, file.buffer);
-       }
+            console.log(`[${CLASS}] Appending file to formdata... => `, file);
 
-       this._fileHandler.upload(filesFromData).subscribe(
-        //map the success function and alert the response
-        (success) => { alert(success._body) },
-        (error) => alert(error))
+            filesFromData.append('showbizphoto[]', file.buffer, file.id);
+            filesFromData.append('captions', JSON.stringify({ id: file.id, caption: file.caption }));
+        }
+
+        this._fileHandler.upload(filesFromData).subscribe(
+            //map the success function and alert the response
+            (success) => { alert(success._body) },
+            (error) => alert(error))
     }
 }

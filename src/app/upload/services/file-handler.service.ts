@@ -50,7 +50,7 @@ export class FileHandlerService {
         //call the angular http method
         return this._http
             //post the form data to the url defined above and map the response.
-            .post('localhost', files).map((res: Response) => res.json());
+            .post('http://localhost:3000/upload', files).map((res: Response) => res.json());
     }
 
 

@@ -119,7 +119,6 @@ export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
      * @memberof PreviewComponent
      */
     onUploadFiles() {
-        console.log(`[${CLASS}] Uploading files => `, this.files);
         this.onUploadFilesEmitter.emit(this.files);
     }
 }

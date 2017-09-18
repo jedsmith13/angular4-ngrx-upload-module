@@ -94,12 +94,12 @@ export class UploadComponent implements OnInit {
             console.log(`[${CLASS}] Appending file to formdata... => `, file);
 
             filesFromData.append('showbizphoto[]', file.buffer, file.id);
-            filesFromData.append('captions', JSON.stringify({ id: file.id, caption: file.caption }));
+            filesFromData.append('photosReferenceDr', JSON.stringify( { id: file.id + '-xjz34aw1', caption: file.caption }));
         }
 
         this._fileHandler.upload(filesFromData).subscribe(
             //map the success function and alert the response
-            (success) => { alert(success._body) },
-            (error) => alert(error))
+            (response) => { console.log('Success: ', response.json()) },
+            (error) => console.log('Error: ', error))
     }
 }

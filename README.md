@@ -2,9 +2,7 @@
 
 ## Preview
 
-![angular4-uplod-module1](https://user-images.githubusercontent.com/23419176/28749837-54bf4c0a-74dd-11e7-8764-d12e1540346e.JPG)
-
-![angular4-upload-module2](https://user-images.githubusercontent.com/23419176/28749838-54def3fc-74dd-11e7-9a19-c63ccf69919d.JPG)
+Soon..
 
 ## Summary
 Angular4 project that cover upload and manage photos with ngrx immutable tried to use the most 'best practice'.

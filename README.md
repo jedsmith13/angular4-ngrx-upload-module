@@ -1,4 +1,4 @@
-# Angular4-Ngrx-Upload-Module
+# Angular4-Ngrx-Upload-Files-Module
 
 ## Preview
 

@@ -1,5 +1,7 @@
 # Angular4-Ngrx-Upload-Files-Module
 
+Please note that we currently need to upgrade to Angualr 6 + rxjs 6 and with the latest version of ngrx.
+
 ## Preview
 
 Soon..

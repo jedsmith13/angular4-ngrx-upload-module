@@ -7,19 +7,19 @@ div.upload-container-wrapper {
     margin: 0 auto;
 }
 
-md-card {
+mat-card {
     background-color: #fff;
     color: #000;
 }
 
-md-card:nth-child(odd) {
+mat-card:nth-child(odd) {
     margin-bottom: 10px;
 }
 
-md-card-header {
+mat-card-header {
     justify-content: center;
 }
 
-md-card-actions > button {
+mat-card-actions > button {
     color: red;
 }

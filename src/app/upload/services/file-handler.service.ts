@@ -1,67 +1,65 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+
 import * as file from '../reducers/file.reducer';
 import { FilePhotoModel } from '../models/file-photo.model';
-import { FileAddAction } from '../actions/file-add.action';
-import { FileClearAction } from '../actions/file-clear.action';
-import { FileRemoveAction } from '../actions/file-remove.action';
-import { FileChangeCaptionAction } from '../actions/file-change-caption.action';
+import {
+  FileAddAction,
+  FileClearAction,
+  FileRemoveAction,
+  FileChangeCaptionAction
+} from '../actions/file.actions';
 
 @Injectable()
 export class FileHandlerService {
-    constructor(private _store: Store<file.State>, private _http: Http) { }
+  constructor(private _store: Store<file.State>, private _http: HttpClient) {}
 
+  /**
+   * @param {File[]} files
+   * @memberof FileHandler
+   */
+  addFile(files: FilePhotoModel[]) {
+    this._store.dispatch(new FileAddAction(files));
+  }
 
-    /**
-     * @param {File[]} files 
-     * @memberof FileHandler
-     */
-    addFile(files: FilePhotoModel[]) {
-        this._store.dispatch(new FileAddAction(files));
-    }
+  /**
+   * @memberof FileHandlerService
+   */
+  clearFiles() {
+    this._store.dispatch(new FileClearAction());
+  }
 
+  /**
+   * @param {any} id
+   * @memberof FileHandlerService
+   */
+  removeById(id) {
+    this._store.dispatch(new FileRemoveAction(id));
+  }
 
-    /**
-     * @memberof FileHandlerService
-     */
-    clearFiles() {
-        this._store.dispatch(new FileClearAction());
-    }
+  /**
+   * @param {*} files
+   * @returns
+   * @memberof FileHandlerService
+   */
+  upload(files: any) {
+    // call the angular http method
+    return (
+      this._http
+        // post the form data to the url defined above and map the response.
+        .post('http://localhost:3000/upload', files)
+    );
+  }
 
-
-    /**
-     * @param {any} id 
-     * @memberof FileHandlerService
-     */
-    removeById(id) {
-        this._store.dispatch(new FileRemoveAction(id));
-    }
-
-
-    /**
-     * 
-     * 
-     * @param {*} files 
-     * @returns 
-     * @memberof FileHandlerService
-     */
-    upload(files: any) {
-        //call the angular http method
-        return this._http
-            //post the form data to the url defined above and map the response.
-            .post('http://localhost:3000/upload', files).map((res: Response) => res.json());
-    }
-
-
-    // /**
-    //  * Change file/image caption by file id.
-    //  * 
-    //  * @param {any} id 
-    //  * @param {any} caption 
-    //  * @memberof FileHandlerService
-    //  */
-    // changeCaptionById(id, caption) {
-    //     this._store.dispatch(new FileChangeCaptionAction({id, caption}));
-    // }
+  // /**
+  //  * Change file/image caption by file id.
+  //  *
+  //  * @param {any} id
+  //  * @param {any} caption
+  //  * @memberof FileHandlerService
+  //  */
+  // changeCaptionById(id, caption) {
+  //     this._store.dispatch(new FileChangeCaptionAction({id, caption}));
+  // }
 }

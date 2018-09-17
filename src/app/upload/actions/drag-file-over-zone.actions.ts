@@ -23,3 +23,8 @@ export class DropFileOverZoneAction implements Action {
 
   constructor(public payload: number = null) { }
 }
+
+export type DragAndDropActions =
+  DragFileOverZoneAction
+  | LeaveFileOverZoneAction
+  | DropFileOverZoneAction;

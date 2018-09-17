@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '../reducers/drag-and-drop.reducer';
-import { 
-    DragFileOverZoneAction, 
+import {
+    DragFileOverZoneAction,
     LeaveFileOverZoneAction,
-    DropFileOverZoneAction } from '../actions/drag-file-over-zone.action';
-import { FileAddAction } from '../actions/file-add.action';
+    DropFileOverZoneAction } from '../actions/drag-file-over-zone.actions';
 
 @Injectable()
 export class DragAndDropService {
@@ -17,7 +16,6 @@ export class DragAndDropService {
 
 
     /**
-     * 
      * @memberof DragAndDropService
      */
     notifyFileOverZone() {
@@ -26,7 +24,6 @@ export class DragAndDropService {
 
 
     /**
-     * 
      * @memberof DragAndDropService
      */
     notifyLeaveFileOverZone() {

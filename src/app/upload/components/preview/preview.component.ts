@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, Output, OnChanges, SimpleChanges, Renderer2, ChangeDetectionStrategy, AfterViewInit, ViewChildren, EventEmitter } from '@angular/core';
 import { FilePhotoModel } from '../../models/file-photo.model';
 import { FileHandlerService } from '../../services/file-handler.service';
-import { Observable } from 'rxjs/Observable'
+import { fromEvent } from 'rxjs'
+import { debounceTime } from 'rxjs/operators';
 
 const CLASS = 'PreviewComponent';
 
@@ -11,25 +12,25 @@ const CLASS = 'PreviewComponent';
     <h3>- Preview Your Photos -</h3>
     <div class="preview-container">
      <div class="image-preview-content" dynamic-scroll [count]="files.length" [size]="250">
-        <md-card class="preview-card" *ngFor="let file of files">
-            <md-progress-spinner class="image-loader" [color]="'primary'" [mode]="'indeterminate'" #myLoader></md-progress-spinner>
+        <mat-card class="preview-card" *ngFor="let file of files">
+            <mat-progress-spinner class="image-loader" [color]="'primary'" [mode]="'indeterminate'" #myLoader></mat-progress-spinner>
             <div class="preview-image-cancel" (click)="onRemoveFile(file.id)">
-              <md-icon>cancel</md-icon>
+              <mat-icon>cancel</mat-icon>
             </div>
             <div class="image-content hide">
-                <img md-card-image class="preview-image" process-image-buffer [imageBuffer]="file.buffer" (onImageLoaded)="onImageLoaded($event, myLoader._elementRef.nativeElement)">
-                <md-card-content class="card-content">
-                        <md-input-container class="image-description">
-                            <input mdInput #message maxlength="256" placeholder="Message" [attr.data-imgid]="file.id">
-                            <md-hint align="start"><strong>Don't disclose personal info</strong> </md-hint>
-                            <md-hint align="end">{{message.value.length}} / 256</md-hint>
-                        </md-input-container>
-                </md-card-content>
+                <img mat-card-image class="preview-image" process-image-buffer [imageBuffer]="file.buffer" (onImageLoaded)="onImageLoaded($event, myLoader._elementRef.nativeElement)">
+                <mat-card-content class="card-content">
+                        <mat-form-field class="image-description">
+                            <input matInput #message maxlength="256" placeholder="Message" [attr.data-imgid]="file.id">
+                            <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
+                            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                        </mat-form-field>
+                </mat-card-content>
             </div>
-        </md-card>
+        </mat-card>
       </div>
     </div>
-    <button class="upload-btn" md-raised-button (click)="onUploadFiles()">Upload</button>
+    <button class="upload-btn" mat-raised-button (click)="onUploadFiles()">Upload</button>
     `,
     styleUrls: ['preview.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -69,9 +70,9 @@ export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
         // Subscribe for each input below image for change text then update the caption of the image due to 
         // The user event text.
         this.messageElementsRef.forEach((messageInput: any) => {
-            Observable.fromEvent(messageInput.nativeElement, 'keyup')
-                .debounceTime(300)
-                .subscribe((keyboardEvent: any) => {
+            fromEvent(messageInput.nativeElement, 'keyup').pipe(
+                debounceTime(300)
+                ).subscribe((keyboardEvent: any) => {
                     // Initialzie local variable per event it will be populated agian with new data.
                     let el = keyboardEvent.target,
                         imgId = el.getAttribute('data-imgid'),

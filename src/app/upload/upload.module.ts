@@ -5,7 +5,7 @@ import {
     FormsModule,
     ReactiveFormsModule
 } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { UploadComponent } from './upload.component';
 import {
     UploadBodyComponent,
@@ -19,11 +19,11 @@ import { ProcessImageBufferDirective } from './directives/process-image-buffer.d
 import { FileUploadDirective } from './directives/file-upload.directive';
 
 import {
-    MdCardModule,
-    MdButtonModule,
-    MdIconModule,
-    MdProgressSpinnerModule,
-    MdInputModule
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatInputModule
 } from '@angular/material';
 
 // TODO Implement effect thing..
@@ -34,25 +34,24 @@ import { FileHandlerService } from './services/file-handler.service';
 import { DragAndDropService } from './services/drag-and-drop.service';
 import { DynamicScrollDirective } from './directives/dynamic-scroll.directive';
 
-
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
+        HttpClientModule,
         BrowserAnimationsModule,
-        MdCardModule,
-        MdButtonModule,
-        MdIconModule,
-        MdProgressSpinnerModule,
-        MdInputModule
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatInputModule
     ],
     declarations: [
         UploadComponent,
         UploadBodyComponent,
         UploadHeaderComponent,
-        FileUploadDirective,        
+        FileUploadDirective,
         UploadFileFormComponent,
         DragAndDropDirective,
         ProcessImageBufferDirective,

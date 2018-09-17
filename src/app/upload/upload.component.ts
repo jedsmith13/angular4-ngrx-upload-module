@@ -4,7 +4,7 @@ import { FileHandlerService } from './services/file-handler.service';
 import * as fromRootUpload from '../core/map-reducer';
 import * as fromFile from '../upload/reducers/file.reducer';
 import * as fromDragAndDrop from '../upload/reducers/drag-and-drop.reducer';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 const CLASS = 'UploadComponent';
 
@@ -12,22 +12,24 @@ const CLASS = 'UploadComponent';
     selector: 'upload-container',
     template: `
     <div class="upload-container-wrapper">
-    <md-card>
-        <md-card-header>
+    <mat-card>
+        <mat-card-header>
             <upload-header [title]="'Upload Your Best Pics ;)'" [subtitle]="'You can upload 10 photos max.'"></upload-header>
-        </md-card-header>
-        <md-card-content>
-            <upload-body [currentStoreFileCount]="currentStoreFileCount"  [isFileOverZone]="(dragAndDropState$ | async)?.isFileOverZone" [text]="'Drag files here'">
+        </mat-card-header>
+        <mat-card-content>
+            <upload-body [currentStoreFileCount]="currentStoreFileCount"
+                         [isFileOverZone]="(dragAndDropState$ | async)?.isFileOverZone"
+                         [text]="'Drag files here'">
             </upload-body>
-        </md-card-content>
-        <md-card-actions *ngIf="files.length > 0">
-            <button md-button (click)="onClearFiles()">Remove All Photos From Preview</button>
-        </md-card-actions>
-    </md-card>
+        </mat-card-content>
+        <mat-card-actions *ngIf="files.length > 0">
+            <button mat-button (click)="onClearFiles()">Remove All Photos From Preview</button>
+        </mat-card-actions>
+    </mat-card>
 
-    <md-card *ngIf="files.length > 0">
+    <mat-card *ngIf="files.length > 0">
         <preview-container [files]="files" (onUploadFilesEmitter)="onUploadFiles($event)"></preview-container>
-    </md-card>
+    </mat-card>
     </div>
     `,
     styleUrls: ['./upload.component.css']
@@ -48,7 +50,7 @@ export class UploadComponent implements OnInit {
 
 
     /**
-     * 
+     *
      */
     files: Array<any> = [];
 
@@ -68,8 +70,10 @@ export class UploadComponent implements OnInit {
         this.filesChangesState$ = this._store.select('file');
 
         this.filesChangesState$.subscribe(fileChangeState => {
-            this.files = fileChangeState.files;
-            this.currentStoreFileCount = fileChangeState.files.length;
+            if (fileChangeState) {
+                this.files = fileChangeState.files;
+                this.currentStoreFileCount = fileChangeState.files.length;
+            }
         })
     }
 
@@ -83,23 +87,22 @@ export class UploadComponent implements OnInit {
 
 
     /**
-     * @param {any} files 
+     * @param {any} files
      * @memberof UploadComponent
      */
     onUploadFiles(files) {
-        let filesFromData: FormData = new FormData();
-        filesFromData.append('cid', 'xjz34aw1');
+        const filesFromData: FormData = new FormData();
 
-        for (let file of files) {
+        for (const file of files) {
             console.log(`[${CLASS}] Appending file to formdata... => `, file);
 
-            filesFromData.append('showbizphoto[]', file.buffer, file.id);
-            filesFromData.append('photosReferenceDr', JSON.stringify( { id: file.id + '-xjz34aw1', caption: file.caption }));
+            filesFromData.append('files', file.buffer, file.id);
+            filesFromData.append('photosReferenceDr', JSON.stringify( { id: file.id, caption: file.caption }));
         }
 
         this._fileHandler.upload(filesFromData).subscribe(
-            //map the success function and alert the response
-            (response) => { console.log('Success: ', response.json()) },
+            // map the success function and alert the response
+            (response) => { console.log('Success: ', response) },
             (error) => console.log('Error: ', error))
     }
 }

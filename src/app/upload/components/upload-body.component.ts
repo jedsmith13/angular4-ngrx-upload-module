@@ -12,7 +12,7 @@ const CLASS = 'UploadBodyComponent';
         <div class="dropzone" drag-and-drop (onDropFile)="onDropFile($event)" (onFileOverZone)="onFileOverZone($event)" (onFileLeaveZone)="onFileLeaveZone($event)">
           <div class="text-wrapper">
             <div class="centered">
-                <md-icon>cloud_upload</md-icon>
+                <mat-icon>cloud_upload</mat-icon>
                 <div [ngClass]="{'hide' : isFileOverZone}">
                     <div>{{text}}</div>
                 </div>

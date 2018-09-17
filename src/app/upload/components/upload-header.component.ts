@@ -4,8 +4,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
     selector: 'upload-header',
     template: `
         <div class="upload-header-container">
-          <md-card-title>{{title}}</md-card-title>
-          <md-card-subtitle>{{subtitle}}</md-card-subtitle>
+          <mat-card-title>{{title}}</mat-card-title>
+          <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
         </div>
     `,
     styleUrls: ['./upload-header.component.css'],

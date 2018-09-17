@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { DRAG_FILE_OVER_ZONE, LEAVE_FILE_OVER_ZONE } from '../actions/drag-file-over-zone.action';
+import { Observable } from 'rxjs';
+import { DRAG_FILE_OVER_ZONE, LEAVE_FILE_OVER_ZONE } from '../actions/drag-file-over-zone.actions';
 
 @Injectable()
 export class DragAndDropEffects {

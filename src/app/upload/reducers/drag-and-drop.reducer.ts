@@ -1,9 +1,10 @@
-import { ActionReducer, Action } from '@ngrx/store';
+import { ActionReducer } from '@ngrx/store';
 import {
     DRAG_FILE_OVER_ZONE,
     LEAVE_FILE_OVER_ZONE,
-    WHEN_DROP_FILE_OVER_ZONE
-} from '../actions/drag-file-over-zone.action';
+    WHEN_DROP_FILE_OVER_ZONE,
+    DragAndDropActions
+} from '../actions/drag-file-over-zone.actions';
 
 export interface State {
     isFileOverZone: boolean;
@@ -17,7 +18,7 @@ export const initialState: State = {
 
 const CLASS = 'DRAG-AND-DROP-REDUCER';
 
-export const reducer: ActionReducer<State> = (state = initialState, action: Action) => {
+export const reducer: ActionReducer<State> = (state = initialState, action: DragAndDropActions) => {
     switch (action.type) {
         case DRAG_FILE_OVER_ZONE:
             console.log(`[${CLASS}] Changing state file over zone.`);

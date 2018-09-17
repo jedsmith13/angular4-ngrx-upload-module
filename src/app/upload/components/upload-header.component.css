@@ -1,4 +1,4 @@
-.upload-header-container md-card-subtitle {
+.upload-header-container mat-card-subtitle {
     text-decoration: underline;
     font-size: 12px;
 }

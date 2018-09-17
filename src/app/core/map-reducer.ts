@@ -1,6 +1,5 @@
-import { ActionReducer } from '@ngrx/store';
-import { compose } from '@ngrx/core/compose';
-import { combineReducers } from '@ngrx/store';
+import { ActionReducer, combineReducers, compose } from '@ngrx/store';
+
 import { storeFreeze } from 'ngrx-store-freeze';
 import { environment } from '../../environments/environment';
 
@@ -12,13 +11,13 @@ export interface State {
   file: fromFile.State
 }
 
-const reducers = {
+export const reducers = {
   dragAndDrop: fromDragAndDrop.reducer,
   file: fromFile.reducer
 }
 
-const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
-const productionReducer: ActionReducer<State> = combineReducers(reducers);
+const developmentReducer = compose(storeFreeze, combineReducers)(reducers);
+const productionReducer = combineReducers(reducers);
 
 export function reducer(state: any, action: any) {
   if (environment.production) {

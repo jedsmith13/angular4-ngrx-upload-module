@@ -4,12 +4,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
-import { UtilsService } from './common/utils.service';
-import { reducers } from './core/map-reducer';
 import { environment } from '../environments/environment';
-
 import { AppComponent } from './app.component';
-import { UploadModule } from './upload/upload.module';
+import { NgrxUploadModule } from 'projects/ngrx-upload/src/public_api';
 
 @NgModule({
   declarations: [
@@ -17,12 +14,11 @@ import { UploadModule } from './upload/upload.module';
   ],
   imports: [
     BrowserModule,
-    UploadModule,
-    StoreModule.forRoot(reducers),
+    NgrxUploadModule,
+    StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
    ],
-  providers: [UtilsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

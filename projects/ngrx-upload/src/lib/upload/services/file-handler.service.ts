@@ -10,10 +10,12 @@ import {
   FileRemoveAction,
   FileChangeCaptionAction
 } from '../actions/file.actions';
+import { Observable } from 'rxjs';
+import { T } from '@angular/core/src/render3';
 
 @Injectable()
 export class FileHandlerService {
-  constructor(private _store: Store<file.State>, private _http: HttpClient) {}
+  constructor(private _store: Store<file.FileState>, private _http: HttpClient) {}
 
   /**
    * @param {File[]} files
@@ -43,7 +45,7 @@ export class FileHandlerService {
    * @returns
    * @memberof FileHandlerService
    */
-  upload(files: any) {
+  upload(files: any): Observable<any> {
     // call the angular http method
     return (
       this._http

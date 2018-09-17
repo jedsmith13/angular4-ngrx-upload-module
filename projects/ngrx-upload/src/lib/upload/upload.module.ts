@@ -6,6 +6,15 @@ import {
     ReactiveFormsModule
 } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+
+import {
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatInputModule
+} from '@angular/material';
+
 import { UploadComponent } from './upload.component';
 import {
     UploadBodyComponent,
@@ -17,14 +26,6 @@ import {
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { ProcessImageBufferDirective } from './directives/process-image-buffer.directive';
 import { FileUploadDirective } from './directives/file-upload.directive';
-
-import {
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatInputModule
-} from '@angular/material';
 
 // TODO Implement effect thing..
 // import { EffectsModule } from '@ngrx/effects';

@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-    selector: 'upload-header',
+    selector: 'ngrx-upload-header',
     template: `
         <div class="upload-header-container">
           <mat-card-title>{{title}}</mat-card-title>

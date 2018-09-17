@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../reducers/drag-and-drop.reducer';
+
+import { DragAndDropState } from '../reducers/drag-and-drop.reducer';
 import {
     DragFileOverZoneAction,
     LeaveFileOverZoneAction,
@@ -11,7 +12,7 @@ export class DragAndDropService {
     /**
      *
      */
-    constructor(private _store: Store<State>) {
+    constructor(private _store: Store<DragAndDropState>) {
     }
 
 

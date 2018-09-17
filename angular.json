@@ -115,6 +115,41 @@
           }
         }
       }
+    },
+    "ngrx-upload": {
+      "root": "projects/ngrx-upload",
+      "sourceRoot": "projects/ngrx-upload/src",
+      "projectType": "library",
+      "prefix": "ngrx-upload",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngrx-upload/tsconfig.lib.json",
+            "project": "projects/ngrx-upload/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngrx-upload/src/test.ts",
+            "tsConfig": "projects/ngrx-upload/tsconfig.spec.json",
+            "karmaConfig": "projects/ngrx-upload/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngrx-upload/tsconfig.lib.json",
+              "projects/ngrx-upload/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "dashboard.client",

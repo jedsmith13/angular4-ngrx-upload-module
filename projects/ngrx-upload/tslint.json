@@ -1,0 +1,17 @@
+{
+    "extends": "../../tslint.json",
+    "rules": {
+        "directive-selector": [
+            true,
+            "attribute",
+            "ngrxUpload",
+            "camelCase"
+        ],
+        "component-selector": [
+            true,
+            "element",
+            "ngrx-upload",
+            "kebab-case"
+        ]
+    }
+}

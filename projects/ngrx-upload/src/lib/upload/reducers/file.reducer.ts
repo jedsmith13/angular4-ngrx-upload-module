@@ -1,5 +1,3 @@
-import { ActionReducer } from '@ngrx/store';
-
 import { FilePhotoModel } from '../models/file-photo.model';
 import {
   FILE_ADD,
@@ -9,20 +7,20 @@ import {
   FileActions
 } from '../actions/file.actions';
 
-export interface State {
+export interface FileState {
   files: FilePhotoModel[];
 }
 
-export const initialState: State = {
+export const initialState: FileState = {
   files: []
 };
 
 const CLASS = 'FILE-MANAGMENT-REDUCER';
 
-export const reducer: ActionReducer<State> = (
-  state = initialState,
+export function fileReducer(
+  state: FileState = initialState,
   action: FileActions
-) => {
+) {
   switch (action.type) {
     case FILE_ADD:
       console.log(
@@ -56,7 +54,7 @@ export const reducer: ActionReducer<State> = (
 
       const newFilesState = state.files.filter(file => {
         if (file.id !== fileId) {
-            return file;
+          return file;
         }
       });
 
@@ -64,4 +62,4 @@ export const reducer: ActionReducer<State> = (
     default:
       return state;
   }
-};
+}

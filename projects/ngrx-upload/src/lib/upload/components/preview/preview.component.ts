@@ -102,9 +102,12 @@ export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
           );
 
           // Get the first image it not matter because it always be id that relate to one image entity.
-          const image = this.files.filter(file => file.id === imgId)[0];
+          const index = this.files.findIndex(file => file.id === imgId);
 
-          image.caption = caption;
+          const files = [...this.files];
+          files[index] = { ...this.files[index], caption };
+
+          this.files = files;
         });
     });
   }
@@ -117,8 +120,7 @@ export class PreviewComponent implements OnInit, OnChanges, AfterViewInit {
    * @param {any} element
    * @memberof PreviewComponent
    */
-  onImageLoaded(element, loaderEl) {
-    this._renderer.addClass(loaderEl, 'hide');
+  onImageLoaded(element) {
     element.el.src = element.src;
     this._renderer.removeClass(element.parent, 'hide');
   }

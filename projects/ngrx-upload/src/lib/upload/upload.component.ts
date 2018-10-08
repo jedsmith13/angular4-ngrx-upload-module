@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, Input } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { FileHandlerService } from './services/file-handler.service';
 import * as fromRootUpload from '../core/map-reducer';
 import * as fromFile from '../upload/reducers/file.reducer';
@@ -35,6 +35,27 @@ const CLASS = 'UploadComponent';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+  @Input() options = {
+    url: 'http://localhost:3000/upload',
+    header: null,
+    formatter: (files): FormData => {
+      const filesFromData = new FormData();
+
+      for (const file of files) {
+        console.log(`[${CLASS}] Appending file to formdata... => `, file);
+
+        filesFromData.append('files', file.buffer, file.id);
+        filesFromData.append(
+          'photosReferenceDr',
+          JSON.stringify({ id: file.id, caption: file.caption })
+        );
+      }
+
+      return filesFromData;
+    },
+    actions: []
+  };
+
   /**
    * @type {Observable<fromDragAndDrop.DragAndDropState>}
    * @memberof UploadComponent
@@ -64,9 +85,12 @@ export class UploadComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.dragAndDropState$ = this._store.select(fromRootUpload.getDragAndDrop);
-    this.filesChangesState$ = this._store.select(fromRootUpload.getFile);
+    this.dragAndDropState$ = this._store.pipe(
+      select(fromRootUpload.getDragAndDrop)
+    );
+    this.filesChangesState$ = this._store.pipe(select(fromRootUpload.getFile));
 
+    // TODO: this needs to be modified to allow multiple uploads to function independently
     this.filesChangesState$.subscribe(fileChangeState => {
       if (fileChangeState) {
         this.files = fileChangeState.files;
@@ -87,24 +111,26 @@ export class UploadComponent implements OnInit {
    * @memberof UploadComponent
    */
   onUploadFiles(files) {
-    const filesFromData: FormData = new FormData();
+    const filesFromData: FormData = this.options.formatter(files);
 
-    for (const file of files) {
-      console.log(`[${CLASS}] Appending file to formdata... => `, file);
+    const url =
+      typeof this.options.url === 'function'
+        ? (this.options.url as any)()
+        : this.options.url;
 
-      filesFromData.append('files', file.buffer, file.id);
-      filesFromData.append(
-        'photosReferenceDr',
-        JSON.stringify({ id: file.id, caption: file.caption })
+    this._fileHandler
+      .upload(filesFromData, url, { header: this.options.header })
+      .subscribe(
+        // map the success function and alert the response
+        response => {
+          if (this.options.actions && this.options.actions.length > 0) {
+            this.options.actions.forEach(action =>
+              this._store.dispatch(new action(response))
+            );
+          }
+          files.length = 0;
+        },
+        error => console.log('Error: ', error)
       );
-    }
-
-    this._fileHandler.upload(filesFromData).subscribe(
-      // map the success function and alert the response
-      response => {
-        console.log('Success: ', response);
-      },
-      error => console.log('Error: ', error)
-    );
   }
 }

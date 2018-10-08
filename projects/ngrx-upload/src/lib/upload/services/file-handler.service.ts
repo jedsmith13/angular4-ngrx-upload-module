@@ -7,11 +7,9 @@ import { FilePhotoModel } from '../models/file-photo.model';
 import {
   FileAddAction,
   FileClearAction,
-  FileRemoveAction,
-  FileChangeCaptionAction
+  FileRemoveAction
 } from '../actions/file.actions';
 import { Observable } from 'rxjs';
-import { T } from '@angular/core/src/render3';
 
 @Injectable()
 export class FileHandlerService {
@@ -45,13 +43,11 @@ export class FileHandlerService {
    * @returns
    * @memberof FileHandlerService
    */
-  upload(files: any): Observable<any> {
+  upload(files: any, url: string, options): Observable<any> {
     // call the angular http method
-    return (
-      this._http
+    return this._http
         // post the form data to the url defined above and map the response.
-        .post('http://localhost:3000/upload', files)
-    );
+        .post(url, files, options);
   }
 
   // /**

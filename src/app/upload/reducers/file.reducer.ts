@@ -1,5 +1,3 @@
-import { ActionReducer } from '@ngrx/store';
-
 import { FilePhotoModel } from '../models/file-photo.model';
 import {
   FILE_ADD,
@@ -9,30 +7,35 @@ import {
   FileActions
 } from '../actions/file.actions';
 
-export interface State {
-  files: FilePhotoModel[];
+export interface FileState {
+  files: { [id: number]: FilePhotoModel[] };
 }
 
-export const initialState: State = {
-  files: []
+export const initialState: FileState = {
+  files: {}
 };
 
-const CLASS = 'FILE-MANAGMENT-REDUCER';
+// const CLASS = 'FILE-MANAGMENT-REDUCER';
 
-export const reducer: ActionReducer<State> = (
-  state = initialState,
+export function fileReducer(
+  state: FileState = initialState,
   action: FileActions
-) => {
+) {
   switch (action.type) {
     case FILE_ADD:
-      console.log(
-        `[${CLASS}] Added new file/files to preview before submition => `,
-        state.files.concat(action.payload)
-      );
+      // console.log(
+      //   `[${CLASS}] Added new file/files to preview before submition => `,
+      //   state.files.concat(action.payload)
+      // );
+      const id = action.payload.id;
+      let files = [];
+      if (state.files[id]) {
+        files = [...state.files[id]];
+      }
 
-      return Object.assign({}, state, {
-        files: state.files.concat(action.payload)
-      });
+      files = [...files, ...action.payload.files];
+
+      return { ...state, files: { ...state.files, [id]: files } };
     // case FILE_CHANGE_CAPTION: {
     //     console.log(`[${CLASS}] Changing caption for image => `, action.payload.id);
 
@@ -43,25 +46,26 @@ export const reducer: ActionReducer<State> = (
     //     return Object.assign({}, state, { files: state.files.concat(newFilesState) });
     // }
     case FILE_CLEAR:
-      console.log(`[${CLASS}] Cleaning all files from store.`);
+      // console.log(`[${CLASS}] Cleaning all files from store.`);
 
-      return initialState;
+      return { ...state, files: { ...state.files, [action.payload]: [] } };
     case FILE_REMOVE:
-      const fileId = action.payload;
+      const fileGroupId = action.payload.id;
+      const fileId = action.payload.fileId;
 
-      console.log(
-        `[${CLASS}] Removing file from files by file guid => `,
-        fileId
-      );
+      // console.log(
+      //   `[${CLASS}] Removing file from files by file guid => `,
+      //   fileId
+      // );
 
-      const newFilesState = state.files.filter(file => {
+      const newFiles = state.files[fileGroupId].filter(file => {
         if (file.id !== fileId) {
-            return file;
+          return file;
         }
       });
 
-      return Object.assign({}, state, { files: newFilesState });
+      return { ...state, files: { ...state.files, [fileGroupId]: newFiles } };
     default:
       return state;
   }
-};
+}

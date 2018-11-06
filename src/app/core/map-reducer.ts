@@ -1,28 +1,28 @@
-import { ActionReducer, combineReducers, compose } from '@ngrx/store';
-
-import { storeFreeze } from 'ngrx-store-freeze';
-import { environment } from '../../environments/environment';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromDragAndDrop from '../upload/reducers/drag-and-drop.reducer';
 import * as fromFile from '../upload/reducers/file.reducer';
 
 export interface State {
-  dragAndDrop: fromDragAndDrop.State,
-  file: fromFile.State
+  dragAndDrop: fromDragAndDrop.DragAndDropState;
+  file: fromFile.FileState;
 }
 
 export const reducers = {
-  dragAndDrop: fromDragAndDrop.reducer,
-  file: fromFile.reducer
-}
+  dragAndDrop: fromDragAndDrop.dragAndDropReducer,
+  file: fromFile.fileReducer
+};
 
-const developmentReducer = compose(storeFreeze, combineReducers)(reducers);
-const productionReducer = combineReducers(reducers);
+export const getFileUploadState = createFeatureSelector<State>('file-upload');
 
-export function reducer(state: any, action: any) {
-  if (environment.production) {
-    return productionReducer(state, action);
-  } else {
-    return developmentReducer(state, action);
-  }
-}
+export const getFile = createSelector(
+  getFileUploadState,
+  (state: State): fromFile.FileState =>
+    state.file ? state.file : fromFile.initialState
+);
+
+export const getDragAndDrop = createSelector(
+  getFileUploadState,
+  (state: State): fromDragAndDrop.DragAndDropState =>
+    state.dragAndDrop ? state.dragAndDrop : fromDragAndDrop.initialState
+);

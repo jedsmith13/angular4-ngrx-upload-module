@@ -7,48 +7,47 @@ import { FilePhotoModel } from '../models/file-photo.model';
 import {
   FileAddAction,
   FileClearAction,
-  FileRemoveAction,
-  FileChangeCaptionAction
+  FileRemoveAction
 } from '../actions/file.actions';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class FileHandlerService {
-  constructor(private _store: Store<file.State>, private _http: HttpClient) {}
+  constructor(
+    private _store: Store<file.FileState>,
+    private _http: HttpClient
+  ) {}
 
   /**
-   * @param {File[]} files
    * @memberof FileHandler
    */
-  addFile(files: FilePhotoModel[]) {
-    this._store.dispatch(new FileAddAction(files));
+  addFile(id: number, files: FilePhotoModel[]) {
+    this._store.dispatch(new FileAddAction({id, files}));
   }
 
   /**
    * @memberof FileHandlerService
    */
-  clearFiles() {
-    this._store.dispatch(new FileClearAction());
+  clearFiles(id: number) {
+    this._store.dispatch(new FileClearAction(id));
   }
 
   /**
-   * @param {any} id
    * @memberof FileHandlerService
    */
-  removeById(id) {
-    this._store.dispatch(new FileRemoveAction(id));
+  removeById(id: number, fileId: string) {
+    this._store.dispatch(new FileRemoveAction({id, fileId}));
   }
 
   /**
-   * @param {*} files
-   * @returns
    * @memberof FileHandlerService
    */
-  upload(files: any) {
+  upload(files: any, url: string, options): Observable<any> {
     // call the angular http method
     return (
       this._http
         // post the form data to the url defined above and map the response.
-        .post('http://localhost:3000/upload', files)
+        .post(url, files, options)
     );
   }
 

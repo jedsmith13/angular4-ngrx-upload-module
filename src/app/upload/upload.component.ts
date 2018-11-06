@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, Input } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { FileHandlerService } from './services/file-handler.service';
 import * as fromRootUpload from '../core/map-reducer';
 import * as fromFile from '../upload/reducers/file.reducer';
 import * as fromDragAndDrop from '../upload/reducers/drag-and-drop.reducer';
 import { Observable } from 'rxjs';
 
-const CLASS = 'UploadComponent';
+// const CLASS = 'UploadComponent';
 
 @Component({
-    selector: 'upload-container',
-    template: `
+  selector: 'ngrx-upload',
+  template: `
     <div class="upload-container-wrapper">
     <mat-card>
         <mat-card-header>
-            <upload-header [title]="'Upload Your Best Pics ;)'" [subtitle]="'You can upload 10 photos max.'"></upload-header>
+            <ngrx-upload-header [title]="'Upload Your Best Pics ;)'" [subtitle]="'You can upload 10 photos max.'"></ngrx-upload-header>
         </mat-card-header>
         <mat-card-content>
-            <upload-body [currentStoreFileCount]="currentStoreFileCount"
+            <ngrx-upload-body [id]="options.id" [currentStoreFileCount]="currentStoreFileCount"
                          [isFileOverZone]="(dragAndDropState$ | async)?.isFileOverZone"
                          [text]="'Drag files here'">
-            </upload-body>
+            </ngrx-upload-body>
         </mat-card-content>
         <mat-card-actions *ngIf="files.length > 0">
             <button mat-button (click)="onClearFiles()">Remove All Photos From Preview</button>
@@ -28,81 +28,116 @@ const CLASS = 'UploadComponent';
     </mat-card>
 
     <mat-card *ngIf="files.length > 0">
-        <preview-container [files]="files" (onUploadFilesEmitter)="onUploadFiles($event)"></preview-container>
+        <ngrx-upload-preview-container [id]="options.id" [files]="files" (onUploadFilesEmitter)="onUploadFiles($event)"></ngrx-upload-preview-container>
     </mat-card>
     </div>
     `,
-    styleUrls: ['./upload.component.css']
+  styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-    /**
-     * @type {Observable<fromDragAndDrop.State>}
-     * @memberof UploadComponent
-     */
-    dragAndDropState$: Observable<fromDragAndDrop.State>;
+  @Input()
+  options = {
+    url: 'http://localhost:3000/upload',
+    header: null,
+    formatter: (files): FormData => {
+      const filesFromData = new FormData();
 
+      for (const file of files) {
+        // console.log(`[${CLASS}] Appending file to formdata... => `, file);
 
-    /**
-     * @type {Observable<fromFile.State>}
-     * @memberof UploadComponent
-     */
-    filesChangesState$: Observable<fromFile.State>;
+        filesFromData.append('files', file.buffer, file.id);
+        filesFromData.append(
+          'photosReferenceDr',
+          JSON.stringify({ id: file.id, caption: file.caption })
+        );
+      }
 
+      return filesFromData;
+    },
+    id: 0,
+    actions: []
+  };
 
-    /**
-     *
-     */
-    files: Array<any> = [];
+  /**
+   * @type {Observable<fromDragAndDrop.DragAndDropState>}
+   * @memberof UploadComponent
+   */
+  dragAndDropState$: Observable<fromDragAndDrop.DragAndDropState>;
 
+  /**
+   * @type {Observable<fromFile.FileState>}
+   * @memberof UploadComponent
+   */
+  filesChangesState$: Observable<fromFile.FileState>;
 
-    /**
-     * @type {number}
-     * @memberof UploadComponent
-     */
-    currentStoreFileCount: number;
+  /**
+   *
+   */
+  files: Array<any> = [];
 
+  /**
+   * @type {number}
+   * @memberof UploadComponent
+   */
+  currentStoreFileCount: number;
 
-    constructor(private _store: Store<fromRootUpload.State>, private _fileHandler: FileHandlerService) { }
+  constructor(
+    private _store: Store<fromRootUpload.State>,
+    private _fileHandler: FileHandlerService
+  ) {}
 
+  ngOnInit() {
+    this.dragAndDropState$ = this._store.pipe(
+      select(fromRootUpload.getDragAndDrop)
+    );
+    this.filesChangesState$ = this._store.pipe(select(fromRootUpload.getFile));
 
-    ngOnInit() {
-        this.dragAndDropState$ = this._store.select('dragAndDrop');
-        this.filesChangesState$ = this._store.select('file');
+    this.filesChangesState$.subscribe(fileChangeState => {
+      if (fileChangeState && fileChangeState.files && fileChangeState.files[this.options.id]) {
+        this.files = fileChangeState.files[this.options.id];
+        this.currentStoreFileCount = this.files.length;
+      }
+    });
+  }
 
-        this.filesChangesState$.subscribe(fileChangeState => {
-            if (fileChangeState) {
-                this.files = fileChangeState.files;
-                this.currentStoreFileCount = fileChangeState.files.length;
-            }
-        })
+  /**
+   * @memberof UploadComponent
+   */
+  onClearFiles() {
+    this._fileHandler.clearFiles(this.options.id);
+  }
+
+  /**
+   * @param {any} files
+   * @memberof UploadComponent
+   */
+  onUploadFiles(files) {
+    const filesFromData: FormData = this.options.formatter(files);
+
+    const url =
+      typeof this.options.url === 'function'
+        ? (this.options.url as any)()
+        : this.options.url;
+
+    const uploadOptions: { header?: Headers } = {};
+
+    if (this.options.header) {
+      uploadOptions.header = this.options.header;
     }
 
-
-    /**
-     * @memberof UploadComponent
-     */
-    onClearFiles() {
-        this._fileHandler.clearFiles();
-    }
-
-
-    /**
-     * @param {any} files
-     * @memberof UploadComponent
-     */
-    onUploadFiles(files) {
-        const filesFromData: FormData = new FormData();
-
-        for (const file of files) {
-            console.log(`[${CLASS}] Appending file to formdata... => `, file);
-
-            filesFromData.append('files', file.buffer, file.id);
-            filesFromData.append('photosReferenceDr', JSON.stringify( { id: file.id, caption: file.caption }));
-        }
-
-        this._fileHandler.upload(filesFromData).subscribe(
-            // map the success function and alert the response
-            (response) => { console.log('Success: ', response) },
-            (error) => console.log('Error: ', error))
-    }
+    this._fileHandler
+      .upload(filesFromData, url, { header: this.options.header })
+      .subscribe(
+        // map the success function and alert the response
+        response => {
+          if (this.options.actions && this.options.actions.length > 0) {
+            this.options.actions.forEach(action =>
+              this._store.dispatch(new action(response))
+            );
+          }
+          this.onClearFiles();
+        },
+        error => console.log('Error: ', error)
+      );
+  }
 }

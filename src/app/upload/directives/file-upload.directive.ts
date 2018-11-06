@@ -3,20 +3,20 @@ import { Directive, HostListener, EventEmitter, Output } from '@angular/core';
 const CLASS = 'FileUploadDirective';
 
 @Directive({
-    selector: "[file-upload]"
+  selector: '[ngrxUploadFileUpload]'
 })
 export class FileUploadDirective {
-    @Output() onFileChanges: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  onFileChanges: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor() {}
-
-    /**
-     * Get notify when files been change from input.
-     * 
-     * @param {*} event 
-     * @memberof FileUploadDirective
-     */
-    @HostListener('change', ['$event']) public onFilesChange(event: any) {
-        this.onFileChanges.emit(event.target.files);
-    }
+  /**
+   * Get notify when files been change from input.
+   *
+   * @param {*} event
+   * @memberof FileUploadDirective
+   */
+  @HostListener('change', ['$event'])
+  public onFilesChange(event: any) {
+    this.onFileChanges.emit(event.target.files);
+  }
 }

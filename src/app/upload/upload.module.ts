@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-    FormsModule,
-    ReactiveFormsModule
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UploadComponent } from './upload.component';
 import {
-    UploadBodyComponent,
-    UploadHeaderComponent,
-    UploadFileFormComponent,
-    PreviewComponent
+  UploadBodyComponent,
+  UploadHeaderComponent,
+  UploadFileFormComponent,
+  PreviewComponent
 } from './components';
 
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
@@ -35,37 +31,30 @@ import { DragAndDropService } from './services/drag-and-drop.service';
 import { DynamicScrollDirective } from './directives/dynamic-scroll.directive';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatProgressSpinnerModule,
-        MatInputModule
-    ],
-    declarations: [
-        UploadComponent,
-        UploadBodyComponent,
-        UploadHeaderComponent,
-        FileUploadDirective,
-        UploadFileFormComponent,
-        DragAndDropDirective,
-        ProcessImageBufferDirective,
-        PreviewComponent,
-        DynamicScrollDirective,
-    ],
-    exports: [
-        UploadComponent
-    ],
-    providers: [
-        DragAndDropService,
-        FileHandlerService
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatInputModule
+  ],
+  declarations: [
+    UploadComponent,
+    UploadBodyComponent,
+    UploadHeaderComponent,
+    FileUploadDirective,
+    UploadFileFormComponent,
+    DragAndDropDirective,
+    ProcessImageBufferDirective,
+    PreviewComponent,
+    DynamicScrollDirective
+  ],
+  exports: [UploadComponent],
+  providers: [DragAndDropService, FileHandlerService]
 })
-export class UploadModule {
-
-}
+export class UploadModule {}
